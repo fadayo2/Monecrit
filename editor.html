@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Éditeur MonÉcrit">
+  <title>Éditeur — MonÉcrit</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="antialiased">
+  <div class="editor-layout">
+    <aside class="sidebar" aria-label="Navigation principale">
+      <a class="brand" href="dashboard.html"><span class="brand-mark">M</span>MonÉcrit</a>
+      <a class="btn btn-primary" href="editor.html">+ Nouveau document</a>
+      <nav class="sidebar-nav"><a class="sidebar-link" href="dashboard.html"><span data-icon="home"></span>Documents récents</a><a class="sidebar-link" href="dashboard.html"><span data-icon="file"></span>Mes documents</a><a class="sidebar-link" href="dashboard.html"><span data-icon="trash"></span>Corbeille</a></nav>
+      <div class="sidebar-section-label">Préférences</div>
+      <nav class="sidebar-nav"><a class="sidebar-link" href="settings.html"><span data-icon="settings"></span>Paramètres</a><button class="sidebar-link" data-theme-toggle>◐ Apparence</button><button class="sidebar-link" data-open-shortcuts>⌨ Raccourcis</button></nav>
+      <div class="sidebar-footer"><button class="sidebar-link" data-logout>Se déconnecter</button></div>
+    </aside>
+    <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+    <main class="editor-main">
+      <header class="mobile-header"><button id="mobile-menu-toggle" class="icon-button" aria-label="Ouvrir le menu">☰</button><a class="brand" href="dashboard.html"><span class="brand-mark">M</span>MonÉcrit</a><a class="icon-button" href="dashboard.html" aria-label="Mes documents">⌂</a></header>
+      <div class="editor-topbar">
+        <div class="editor-title-wrap"><input id="document-title" class="document-title-input" value="Sans titre" aria-label="Titre du document"></div>
+        <div id="save-status" class="save-status" data-state="saved" role="status" aria-live="polite">Sauvegardé</div>
+        <div class="topbar-actions"><button class="focus-button" id="focus-toggle" aria-pressed="false"><span aria-hidden="true">◫</span> <span class="focus-label">Mode concentration</span></button><button class="icon-button" data-theme-toggle aria-label="Changer l’apparence">◐</button></div>
+      </div>
+      <div class="toolbar-wrap">
+        <div class="toolbar" role="toolbar" aria-label="Mise en forme du texte">
+          <select id="block-format" class="tool-select" aria-label="Style de paragraphe"><option value="p">Texte</option><option value="h1">Titre 1</option><option value="h2">Titre 2</option><option value="blockquote">Citation</option></select>
+          <span class="tool-divider"></span>
+          <button class="tool-button" data-command="bold" aria-label="Gras"><strong>B</strong></button><button class="tool-button" data-command="italic" aria-label="Italique"><em>I</em></button><button class="tool-button" data-command="underline" aria-label="Souligné"><u>U</u></button><button class="tool-button optional-tool" data-command="strikeThrough" aria-label="Barré"><s>S</s></button>
+          <span class="tool-divider"></span>
+          <button class="tool-button" data-command="insertUnorderedList" aria-label="Liste à puces">•≡</button><button class="tool-button" data-command="insertOrderedList" aria-label="Liste numérotée">1≡</button>
+          <span class="tool-divider optional-tool"></span>
+          <button class="tool-button optional-tool" data-command="justifyLeft" aria-label="Aligner à gauche">≡</button><button class="tool-button optional-tool" data-command="justifyCenter" aria-label="Centrer">≡</button><button class="tool-button optional-tool" data-command="justifyRight" aria-label="Aligner à droite">≡</button><button class="tool-button optional-tool" data-command="outdent" aria-label="Réduire le retrait">←</button><button class="tool-button optional-tool" data-command="indent" aria-label="Augmenter le retrait">→</button>
+          <span class="tool-divider"></span>
+          <button class="tool-button" data-command="undo" aria-label="Annuler">↶</button><button class="tool-button" data-command="redo" aria-label="Rétablir">↷</button>
+          <span class="tool-divider optional-tool"></span>
+          <select id="font-family" class="tool-select optional-tool" aria-label="Police"><option>Inter</option><option>Georgia</option><option>Merriweather</option><option>Arial</option><option>Times New Roman</option></select>
+          <select id="font-size" class="tool-select optional-tool" aria-label="Taille du texte"><option value="14">14 px</option><option value="16">16 px</option><option value="18">18 px</option><option value="20">20 px</option><option value="24">24 px</option></select>
+          <span class="tool-divider"></span>
+          <div class="character-picker"><button id="character-button" class="tool-button character-button" aria-label="Caractères français" aria-haspopup="true">Àç</button><div id="character-palette" class="character-palette" hidden>
+            <button data-character="é">é</button><button data-character="è">è</button><button data-character="ê">ê</button><button data-character="ë">ë</button><button data-character="à">à</button><button data-character="â">â</button><button data-character="î">î</button><button data-character="ï">ï</button><button data-character="ô">ô</button><button data-character="ù">ù</button><button data-character="û">û</button><button data-character="ç">ç</button><button data-character="œ">œ</button><button data-character="æ">æ</button><button data-character="É">É</button><button data-character="È">È</button><button data-character="Ê">Ê</button><button data-character="Ë">Ë</button><button data-character="À">À</button><button data-character="Â">Â</button><button data-character="Î">Î</button><button data-character="Ï">Ï</button><button data-character="Ô">Ô</button><button data-character="Ù">Ù</button><button data-character="Û">Û</button><button data-character="Ç">Ç</button><button data-character="Œ">Œ</button>
+          </div></div>
+        </div>
+      </div>
+      <section class="editor-stage" aria-label="Document">
+        <div id="editor-loading-error" class="editor-error" hidden></div>
+        <article class="paper">
+          <div id="editor" class="editor-content" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Contenu du document" spellcheck="true"></div>
+          <footer class="paper-footer" aria-live="polite"><span id="word-count">0 mot</span><span class="dot">·</span><span id="char-count">0 caractère</span><span class="dot">·</span><span id="reading-time">0 min de lecture</span></footer>
+        </article>
+      </section>
+    </main>
+  </div>
+  <div id="accent-indicator" class="accent-indicator" hidden role="status" aria-live="polite"></div>
+  <div id="shortcuts-modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="shortcuts-title"><div class="modal-card"><header class="modal-header"><h2 id="shortcuts-title">Raccourcis clavier</h2><button class="icon-button" data-close-modal aria-label="Fermer">×</button></header><div class="modal-body"><h3>Édition</h3><table class="shortcut-table"><tr><td>Gras</td><td><kbd>Ctrl</kbd> + <kbd>B</kbd></td></tr><tr><td>Italique</td><td><kbd>Ctrl</kbd> + <kbd>I</kbd></td></tr><tr><td>Souligné</td><td><kbd>Ctrl</kbd> + <kbd>U</kbd></td></tr><tr><td>Annuler</td><td><kbd>Ctrl</kbd> + <kbd>Z</kbd></td></tr><tr><td>Rétablir</td><td><kbd>Ctrl</kbd> + <kbd>Y</kbd></td></tr></table><h3>Français</h3><table class="shortcut-table"><tr><td>Accent aigu</td><td><kbd>Ctrl</kbd> + <kbd>'</kbd></td></tr><tr><td>Accent grave</td><td><kbd>Ctrl</kbd> + <kbd>`</kbd></td></tr><tr><td>Circonflexe</td><td><kbd>Ctrl</kbd> + <kbd>^</kbd></td></tr><tr><td>Tréma</td><td><kbd>Ctrl</kbd> + <kbd>"</kbd></td></tr><tr><td>Cédille</td><td><kbd>Ctrl</kbd> + <kbd>,</kbd></td></tr><tr><td>Ligature œ</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>O</kbd></td></tr><tr><td>Ligature æ</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>A</kbd></td></tr></table><h3>Interface</h3><table class="shortcut-table"><tr><td>Mode concentration</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd></td></tr><tr><td>Afficher les raccourcis</td><td><kbd>Ctrl</kbd> + <kbd>/</kbd></td></tr></table></div></div></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/supabase.js?v=20260905-2"></script><script src="js/i18n.js"></script><script src="js/auth.js"></script><script src="js/documents.js"></script><script src="js/settings.js"></script><script src="js/shortcuts.js"></script><script src="js/ui.js"></script><script src="js/editor.js"></script>
+</body>
+</html>

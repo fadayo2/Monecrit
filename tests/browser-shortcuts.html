@@ -1,0 +1,56 @@
+<!doctype html><html><head><meta charset="utf-8"><title>MonÉcrit shortcut tests</title></head>
+<body><div id="editor" contenteditable="true"></div><div id="indicator" hidden></div><pre id="result">RUNNING</pre>
+<script src="../js/shortcuts.js"></script>
+<script>
+(function(){
+  const editor = document.getElementById('editor');
+  const indicator = document.getElementById('indicator');
+  const Controller = window.MonEcritFrenchShortcuts.FrenchShortcutController;
+  const controller = new Controller(editor, {indicator});
+  const failures=[];
+
+  function key(key, opts={}) {
+    const e = new KeyboardEvent('keydown', {key, bubbles:true, cancelable:true, ...opts});
+    editor.dispatchEvent(e);
+    return e;
+  }
+  function caretAt(offset) {
+    editor.focus();
+    const node=editor.firstChild || editor.appendChild(document.createTextNode(''));
+    const range=document.createRange();
+    range.setStart(node, Math.min(offset, node.length)); range.collapse(true);
+    const sel=getSelection(); sel.removeAllRanges(); sel.addRange(range);
+  }
+  function select(start,end) {
+    editor.focus(); const node=editor.firstChild;
+    const range=document.createRange(); range.setStart(node,start); range.setEnd(node,end);
+    const sel=getSelection(); sel.removeAllRanges(); sel.addRange(range);
+  }
+  function reset(text='') { editor.textContent=text; caretAt(text.length); }
+  function expect(name, actual, expected) { if(actual!==expected) failures.push(`${name}: expected ${expected}, got ${actual}`); }
+
+  const sequences = [
+    ["'",'e','é'], ['`','e','è'], ['^','e','ê'], ['"','e','ë'], ['`','a','à'], [',','c','ç']
+  ];
+  for (const [activator, letter, out] of sequences) {
+    reset(); key(activator,{ctrlKey:true, shiftKey:activator==='"'||activator==='^'}); key(letter); expect(`${activator}+${letter}`,editor.textContent,out);
+  }
+
+  const uppercase = [["'",'E','É'],['`','E','È'],['^','E','Ê'],['"','E','Ë'],['`','A','À'],['^','A','Â'],['^','I','Î'],['"','I','Ï'],['^','O','Ô'],['`','U','Ù'],['^','U','Û'],[',','C','Ç']];
+  for (const [activator, letter, out] of uppercase) {
+    reset(); key(activator,{ctrlKey:true, shiftKey:activator==='"'||activator==='^'}); key(letter,{shiftKey:true}); expect(`upper ${activator}+${letter}`,editor.textContent,out);
+  }
+
+  reset('caf'); caretAt(3); key("'",{ctrlKey:true}); key('e'); expect('middle insertion',editor.textContent,'café');
+  reset('bonxxour'); select(3,5); key("'",{ctrlKey:true}); key('e'); expect('selection replacement',editor.textContent,'bonéour');
+
+  reset(); const activate=key("'",{ctrlKey:true}); expect('activator prevented',activate.defaultPrevented,true); expect('indicator visible',indicator.hidden,false);
+  const unsupported=key('x'); expect('unsupported normal behavior',unsupported.defaultPrevented,false); expect('mode cancelled',controller.accentMode,null);
+
+  reset(); key('O',{ctrlKey:true,shiftKey:true}); expect('oe shortcut',editor.textContent,'œ');
+  reset(); key('A',{ctrlKey:true,shiftKey:true}); expect('ae shortcut',editor.textContent,'æ');
+
+  document.getElementById('result').textContent = failures.length ? 'FAIL\n'+failures.join('\n') : 'PASS — browser shortcut tests';
+  document.body.dataset.testResult = failures.length ? 'fail' : 'pass';
+})();
+</script></body></html>

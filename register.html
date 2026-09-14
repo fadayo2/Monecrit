@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Créer un compte MonÉcrit">
+  <title>Créer un compte — MonÉcrit</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="antialiased">
+  <main class="auth-shell">
+    <section class="auth-visual" aria-hidden="true">
+      <div class="brand"><span class="brand-mark">M</span>MonÉcrit</div>
+      <div class="paper-preview"><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="accent-word">À toi d’écrire.</div></div>
+      <div class="auth-quote"><h1>Ton espace d’écriture personnel.</h1><p>Des raccourcis français intégrés, une sauvegarde automatique et juste ce qu’il faut pour écrire confortablement.</p></div>
+    </section>
+    <section class="auth-panel">
+      <div class="auth-card">
+        <a class="brand" href="login.html"><span class="brand-mark">M</span>MonÉcrit</a>
+        <h2>Créer ton compte.</h2>
+        <p>Quelques secondes, puis une page blanche t’attend.</p>
+        <div id="auth-message" class="auth-message" hidden role="status" aria-live="polite"></div>
+        <form id="register-form">
+          <div class="form-group"><label for="full-name">Nom</label><input class="form-control" id="full-name" name="full_name" type="text" autocomplete="name" required></div>
+          <div class="form-group"><label for="email">E-mail</label><input class="form-control" id="email" name="email" type="email" autocomplete="email" required></div>
+          <div class="form-group"><label for="password">Mot de passe</label><input class="form-control" id="password" name="password" type="password" minlength="8" autocomplete="new-password" required></div>
+          <button id="register-submit" class="btn btn-primary" type="submit">Créer mon compte</button>
+        </form>
+        <p class="auth-switch">Déjà un compte ? <a href="login.html">Se connecter</a></p>
+      </div>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js?v=20260905-2"></script><script src="js/i18n.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+</html>

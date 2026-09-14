@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Tableau de bord MonÉcrit">
+  <title>Mes documents — MonÉcrit</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="antialiased">
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navigation principale">
+      <a class="brand" href="dashboard.html"><span class="brand-mark">M</span>MonÉcrit</a>
+      <button id="new-document" class="btn btn-primary">+ Nouveau document</button>
+      <nav class="sidebar-nav">
+        <button class="sidebar-link active" data-view="recent"><span data-icon="home"></span>Documents récents</button>
+        <button class="sidebar-link" data-view="all"><span data-icon="file"></span>Mes documents</button>
+        <button class="sidebar-link" data-view="trash"><span data-icon="trash"></span>Corbeille</button>
+      </nav>
+      <div class="sidebar-section-label">Préférences</div>
+      <nav class="sidebar-nav">
+        <a class="sidebar-link" href="settings.html"><span data-icon="settings"></span>Paramètres</a>
+        <button class="sidebar-link" data-theme-toggle aria-label="Changer l’apparence">◐ Apparence</button>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-chip"><span class="user-avatar">M</span><div class="user-meta"><strong id="user-name">Utilisateur</strong><span id="user-email"></span></div></div>
+        <button class="sidebar-link" data-logout>Se déconnecter</button>
+      </div>
+    </aside>
+    <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+    <main class="main">
+      <header class="mobile-header"><button id="mobile-menu-toggle" class="icon-button" aria-label="Ouvrir le menu">☰</button><a class="brand" href="dashboard.html"><span class="brand-mark">M</span>MonÉcrit</a><button id="mobile-new-document" class="icon-button" aria-label="Nouveau document">＋</button></header>
+      <div class="dashboard-main">
+        <section class="dashboard-hero">
+          <div><h1>Bonjour <span id="greeting-name">👋</span></h1><p>Qu’est-ce que tu veux écrire aujourd’hui ?</p></div>
+          <label class="search-wrap"><span class="sr-only">Rechercher</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="document-search" class="search-input" type="search" placeholder="Rechercher un document…"></label>
+        </section>
+        <section>
+          <div class="section-header"><div><h2 id="view-title">Documents récents</h2><p id="view-subtitle">Reprends ton écriture là où tu l’as laissée.</p></div><button class="btn btn-ghost" data-open-shortcuts>Raccourcis</button></div>
+          <div id="documents-grid" class="documents-grid" aria-live="polite"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="shortcuts-modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="shortcuts-title">
+    <div class="modal-card"><header class="modal-header"><h2 id="shortcuts-title">Raccourcis clavier</h2><button class="icon-button" data-close-modal aria-label="Fermer">×</button></header><div class="modal-body">
+      <h3>Édition</h3><table class="shortcut-table"><tr><td>Gras</td><td><kbd>Ctrl</kbd> + <kbd>B</kbd></td></tr><tr><td>Italique</td><td><kbd>Ctrl</kbd> + <kbd>I</kbd></td></tr><tr><td>Souligné</td><td><kbd>Ctrl</kbd> + <kbd>U</kbd></td></tr><tr><td>Annuler</td><td><kbd>Ctrl</kbd> + <kbd>Z</kbd></td></tr><tr><td>Rétablir</td><td><kbd>Ctrl</kbd> + <kbd>Y</kbd></td></tr></table>
+      <h3>Français</h3><table class="shortcut-table"><tr><td>Accent aigu</td><td><kbd>Ctrl</kbd> + <kbd>'</kbd></td></tr><tr><td>Accent grave</td><td><kbd>Ctrl</kbd> + <kbd>`</kbd></td></tr><tr><td>Circonflexe</td><td><kbd>Ctrl</kbd> + <kbd>^</kbd></td></tr><tr><td>Tréma</td><td><kbd>Ctrl</kbd> + <kbd>"</kbd></td></tr><tr><td>Cédille</td><td><kbd>Ctrl</kbd> + <kbd>,</kbd></td></tr></table>
+      <h3>Interface</h3><table class="shortcut-table"><tr><td>Mode concentration</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd></td></tr><tr><td>Cette fenêtre</td><td><kbd>Ctrl</kbd> + <kbd>/</kbd></td></tr></table>
+    </div></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js?v=20260905-2"></script><script src="js/i18n.js"></script><script src="js/auth.js"></script><script src="js/documents.js"></script><script src="js/settings.js"></script><script src="js/ui.js"></script><script src="js/dashboard.js"></script>
+</body>
+</html>

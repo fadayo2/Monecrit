@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Connexion à MonÉcrit">
+  <title>Connexion — MonÉcrit</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="antialiased">
+  <main class="auth-shell">
+    <section class="auth-visual" aria-hidden="true">
+      <div class="brand"><span class="brand-mark">M</span>MonÉcrit</div>
+      <div class="paper-preview"><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="accent-word">Écrire, simplement.</div></div>
+      <div class="auth-quote"><h1>Une page calme pour tes idées.</h1><p>Pas de rubans compliqués. Pas de distraction. Ouvre une feuille, écris en français et retrouve ton texte demain.</p></div>
+    </section>
+    <section class="auth-panel">
+      <div class="auth-card">
+        <a class="brand" href="login.html"><span class="brand-mark">M</span>MonÉcrit</a>
+        <h2>Bon retour.</h2>
+        <p>Connecte-toi pour retrouver tes documents.</p>
+        <div id="auth-message" class="auth-message" hidden role="status" aria-live="polite"></div>
+        <form id="login-form">
+          <div class="form-group"><label for="email">E-mail</label><input class="form-control" id="email" name="email" type="email" autocomplete="email" required></div>
+          <div class="form-group"><label for="password">Mot de passe</label><input class="form-control" id="password" name="password" type="password" autocomplete="current-password" required></div>
+          <button id="login-submit" class="btn btn-primary" type="submit">Se connecter</button>
+        </form>
+        <p class="auth-switch">Pas encore de compte ? <a href="register.html">Créer mon compte</a></p>
+      </div>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js?v=20260905-2"></script><script src="js/i18n.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+</html>
