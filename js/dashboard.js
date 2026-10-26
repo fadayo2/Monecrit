@@ -140,12 +140,46 @@
     currentView = view;
     $$('.sidebar-link[data-view]').forEach((button) => button.classList.toggle('active', button.dataset.view === view));
     loadDocuments();
+    loadProgress();
+  }
+
+
+  function renderProgress(sessions, mistakes) {
+    const valid = sessions.filter(s => Number.isFinite(Number(s.overall_score)));
+    const avg = valid.length ? Math.round(valid.reduce((sum,s) => sum + Number(s.overall_score), 0) / valid.length) : null;
+    const words = sessions.reduce((sum,s) => sum + Number(s.words_written || 0), 0);
+    const levels = sessions.reduce((acc,s) => { acc[s.level || 'A1'] = (acc[s.level || 'A1'] || 0) + 1; return acc; }, {});
+    const topLevel = Object.entries(levels).sort((a,b) => b[1]-a[1])[0]?.[0] || 'A1';
+    $('#stat-sessions').textContent = sessions.length;
+    $('#stat-score').textContent = avg == null ? '—' : avg;
+    $('#stat-words').textContent = words.toLocaleString('fr-FR');
+    $('#stat-level').textContent = topLevel;
+    const list = $('#mistake-notebook-list');
+    if (!mistakes.length) { list.innerHTML = '<div class="empty-state"><p>Aucune correction enregistrée pour le moment.</p></div>'; return; }
+    list.innerHTML = mistakes.slice(0,6).map(m => `<article class="notebook-item"><strong>${escapeHtml(m.category || 'Correction')}</strong><span><del>${escapeHtml(m.original || '')}</del> → <b>${escapeHtml(m.correction || '')}</b></span><p>${escapeHtml(m.explanation || '')}</p></article>`).join('');
+  }
+
+  async function loadProgress() {
+    try {
+      const [sessions, mistakes] = await Promise.all([docsApi.listSessions(100), docsApi.listMistakes(30)]);
+      renderProgress(sessions, mistakes);
+    } catch (error) { console.warn('Progress unavailable', error); }
+  }
+
+  async function quickPractice() {
+    const savedLevel = localStorage.getItem('monecrit:practice-level') || 'A1';
+    const topic = window.MonEcritLearning.randomTopic(savedLevel);
+    try {
+      const doc = await docsApi.createDocument(user.id, { title: topic.title, level: savedLevel, prompt: topic.prompt, target_words: topic.target, writing_mode: 'prompt' });
+      location.href = `editor.html?id=${encodeURIComponent(doc.id)}`;
+    } catch (error) { alert(`Impossible de créer l’exercice : ${error.message}`); }
   }
 
   function bindNavigation() {
     $$('.sidebar-link[data-view]').forEach((button) => button.addEventListener('click', () => setView(button.dataset.view)));
     $('#document-search')?.addEventListener('input', render);
     $('#new-document')?.addEventListener('click', createDocument);
+    $('#quick-practice')?.addEventListener('click', quickPractice);
     $('#mobile-new-document')?.addEventListener('click', createDocument);
     $('[data-logout]')?.addEventListener('click', () => window.MonEcritAuth.signOut());
     $('#mobile-menu-toggle')?.addEventListener('click', () => document.body.classList.toggle('sidebar-open'));
@@ -165,6 +199,7 @@
     $('#user-email').textContent = user.email || '';
     bindNavigation();
     loadDocuments();
+    loadProgress();
   }
 
   document.addEventListener('DOMContentLoaded', init);

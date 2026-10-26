@@ -24,7 +24,7 @@
       <div class="editor-topbar">
         <div class="editor-title-wrap"><input id="document-title" class="document-title-input" value="Sans titre" aria-label="Titre du document"></div>
         <div id="save-status" class="save-status" data-state="saved" role="status" aria-live="polite">Sauvegardé</div>
-        <div class="topbar-actions"><button class="focus-button" id="focus-toggle" aria-pressed="false"><span aria-hidden="true">◫</span> <span class="focus-label">Mode concentration</span></button><button class="icon-button" data-theme-toggle aria-label="Changer l’apparence">◐</button></div>
+        <div class="topbar-actions"><button class="focus-button learning-toggle" id="learning-panel-toggle" aria-pressed="true">✦ <span class="focus-label">Coach</span></button><button class="focus-button" id="focus-toggle" aria-pressed="false"><span aria-hidden="true">◫</span> <span class="focus-label">Mode concentration</span></button><button class="icon-button" data-theme-toggle aria-label="Changer l’apparence">◐</button></div>
       </div>
       <div class="toolbar-wrap">
         <div class="toolbar" role="toolbar" aria-label="Mise en forme du texte">
@@ -46,17 +46,51 @@
           </div></div>
         </div>
       </div>
-      <section class="editor-stage" aria-label="Document">
-        <div id="editor-loading-error" class="editor-error" hidden></div>
-        <article class="paper">
+      <section class="learning-bar" aria-label="Outils d’apprentissage">
+        <div class="learning-bar-main">
+          <label class="compact-field"><span>Niveau</span><select id="learning-level"><option value="A1">A1</option><option value="A2">A2</option><option value="B1">B1</option><option value="B2">B2</option></select></label>
+          <div class="topic-summary"><span class="eyebrow">Sujet d’écriture</span><strong id="topic-title">Écriture libre</strong><span id="topic-prompt">Écris librement ou génère un sujet adapté à ton niveau.</span></div>
+          <button id="new-topic" class="btn btn-ghost" type="button">↻ Nouveau sujet</button>
+          <label class="compact-field target-field"><span>Objectif</span><input id="target-words" type="number" min="20" max="2000" step="10" value="70"><small>mots</small></label>
+          <button id="exam-toggle" class="btn btn-ghost" type="button">⏱ Mode examen</button>
+          <button id="analyze-writing" class="btn btn-primary" type="button">✓ Vérifier mon texte</button>
+        </div>
+        <div class="goal-progress" aria-label="Progression vers l’objectif"><span id="goal-progress-fill"></span></div>
+      </section>
+      <section class="editor-workspace" aria-label="Document et coach">
+        <div class="editor-stage" aria-label="Document">
+          <div id="editor-loading-error" class="editor-error" hidden></div>
+          <article class="paper">
           <div id="editor" class="editor-content" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Contenu du document" spellcheck="true"></div>
           <footer class="paper-footer" aria-live="polite"><span id="word-count">0 mot</span><span class="dot">·</span><span id="char-count">0 caractère</span><span class="dot">·</span><span id="reading-time">0 min de lecture</span></footer>
-        </article>
+          </article>
+        </div>
+        <aside id="learning-panel" class="learning-panel" aria-label="Coach d’écriture">
+          <div class="coach-empty" id="coach-empty">
+            <div class="coach-orb">✦</div>
+            <h2>Coach MonÉcrit</h2>
+            <p>Écris ton texte puis lance une correction pour recevoir un score, une version corrigée et des conseils adaptés à ton niveau.</p>
+            <div class="coach-tips"><span>✓ Grammaire</span><span>✓ Vocabulaire</span><span>✓ Structure</span><span>✓ Cohérence</span></div>
+          </div>
+          <div id="coach-loading" class="coach-loading" hidden><span class="spinner"></span><strong>Vérification de ton texte…</strong><span>Vérification locale de la grammaire, du vocabulaire et de la structure.</span></div>
+          <div id="coach-results" hidden>
+            <div class="score-hero"><div class="score-ring"><strong id="overall-score">0</strong><span>/100</span></div><div><span class="eyebrow">Score global</span><h2 id="score-label">À améliorer</h2><p id="analysis-source"></p></div></div>
+            <div class="score-grid">
+              <div><span>Grammaire</span><strong id="score-grammar">0</strong></div><div><span>Vocabulaire</span><strong id="score-vocabulary">0</strong></div><div><span>Structure</span><strong id="score-structure">0</strong></div><div><span>Cohérence</span><strong id="score-coherence">0</strong></div><div><span>Orthographe</span><strong id="score-spelling">0</strong></div>
+            </div>
+            <div class="coach-section"><h3>Version corrigée</h3><div id="corrected-text" class="corrected-copy"></div><button id="apply-correction" class="btn btn-ghost btn-small" type="button">Utiliser cette version</button></div>
+            <div class="coach-section"><h3>Points à corriger</h3><div id="mistakes-list" class="mistakes-list"></div></div>
+            <div class="coach-section"><h3>Ce qui fonctionne bien</h3><ul id="strengths-list" class="feedback-list"></ul></div>
+            <div class="coach-section"><h3>Pour progresser</h3><ul id="suggestions-list" class="feedback-list"></ul></div>
+          </div>
+        </aside>
       </section>
     </main>
   </div>
+  <div id="exam-modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="exam-title"><div class="modal-card exam-card"><header class="modal-header"><h2 id="exam-title">Mode examen</h2><button class="icon-button" data-close-exam aria-label="Fermer">×</button></header><div class="modal-body"><p class="modal-lead">Choisis une durée. Une fois lancé, le compteur démarre et l’interface passe en mode concentration.</p><div class="exam-options"><button data-exam-minutes="15">15 min</button><button data-exam-minutes="30">30 min</button><button data-exam-minutes="45">45 min</button><button data-exam-minutes="60">60 min</button></div></div></div></div>
+  <div id="exam-timer" class="exam-timer" hidden><span>⏱</span><strong id="exam-time-left">30:00</strong><button id="exam-stop" type="button">Terminer</button></div>
   <div id="accent-indicator" class="accent-indicator" hidden role="status" aria-live="polite"></div>
   <div id="shortcuts-modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="shortcuts-title"><div class="modal-card"><header class="modal-header"><h2 id="shortcuts-title">Raccourcis clavier</h2><button class="icon-button" data-close-modal aria-label="Fermer">×</button></header><div class="modal-body"><h3>Édition</h3><table class="shortcut-table"><tr><td>Gras</td><td><kbd>Ctrl</kbd> + <kbd>B</kbd></td></tr><tr><td>Italique</td><td><kbd>Ctrl</kbd> + <kbd>I</kbd></td></tr><tr><td>Souligné</td><td><kbd>Ctrl</kbd> + <kbd>U</kbd></td></tr><tr><td>Annuler</td><td><kbd>Ctrl</kbd> + <kbd>Z</kbd></td></tr><tr><td>Rétablir</td><td><kbd>Ctrl</kbd> + <kbd>Y</kbd></td></tr></table><h3>Français</h3><table class="shortcut-table"><tr><td>Accent aigu</td><td><kbd>Ctrl</kbd> + <kbd>'</kbd></td></tr><tr><td>Accent grave</td><td><kbd>Ctrl</kbd> + <kbd>`</kbd></td></tr><tr><td>Circonflexe</td><td><kbd>Ctrl</kbd> + <kbd>^</kbd></td></tr><tr><td>Tréma</td><td><kbd>Ctrl</kbd> + <kbd>"</kbd></td></tr><tr><td>Cédille</td><td><kbd>Ctrl</kbd> + <kbd>,</kbd></td></tr><tr><td>Ligature œ</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>O</kbd></td></tr><tr><td>Ligature æ</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>A</kbd></td></tr></table><h3>Interface</h3><table class="shortcut-table"><tr><td>Mode concentration</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd></td></tr><tr><td>Afficher les raccourcis</td><td><kbd>Ctrl</kbd> + <kbd>/</kbd></td></tr></table></div></div></div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/supabase.js?v=20260905-2"></script><script src="js/i18n.js"></script><script src="js/auth.js"></script><script src="js/documents.js"></script><script src="js/settings.js"></script><script src="js/shortcuts.js"></script><script src="js/ui.js"></script><script src="js/editor.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/supabase.js?v=20260905-2"></script><script src="js/i18n.js"></script><script src="js/auth.js"></script><script src="js/documents.js"></script><script src="js/learning.js"></script><script src="js/settings.js"></script><script src="js/shortcuts.js"></script><script src="js/ui.js"></script><script src="js/editor.js"></script>
 </body>
 </html>

@@ -36,10 +36,15 @@
           <div><h1>Bonjour <span id="greeting-name">👋</span></h1><p>Qu’est-ce que tu veux écrire aujourd’hui ?</p></div>
           <label class="search-wrap"><span class="sr-only">Rechercher</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="document-search" class="search-input" type="search" placeholder="Rechercher un document…"></label>
         </section>
+        <section class="progress-overview" id="progress-overview">
+          <div class="progress-overview-header"><div><h2>Ta progression</h2><p>Un aperçu de ta pratique et de tes corrections.</p></div><div class="practice-actions"><button id="quick-practice" class="btn btn-primary">✦ Sujet aléatoire</button></div></div>
+          <div class="stats-grid"><div class="stat-card"><span>Textes vérifiés</span><strong id="stat-sessions">0</strong><small>sessions enregistrées</small></div><div class="stat-card"><span>Score moyen</span><strong id="stat-score">—</strong><small>sur 100</small></div><div class="stat-card"><span>Mots pratiqués</span><strong id="stat-words">0</strong><small>dans les vérifications</small></div><div class="stat-card"><span>Niveau pratiqué</span><strong id="stat-level">A1</strong><small>le plus fréquent</small></div></div>
+        </section>
         <section>
           <div class="section-header"><div><h2 id="view-title">Documents récents</h2><p id="view-subtitle">Reprends ton écriture là où tu l’as laissée.</p></div><button class="btn btn-ghost" data-open-shortcuts>Raccourcis</button></div>
           <div id="documents-grid" class="documents-grid" aria-live="polite"></div>
         </section>
+        <section class="mistake-notebook" id="mistake-notebook"><div class="section-header"><div><h2>Carnet d’erreurs</h2><p>Les corrections récentes à revoir.</p></div></div><div id="mistake-notebook-list" class="mistake-notebook-list"><div class="empty-state"><p>Aucune correction enregistrée pour le moment.</p></div></div></section>
       </div>
     </main>
   </div>
@@ -53,6 +58,6 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/supabase.js?v=20260905-2"></script><script src="js/i18n.js"></script><script src="js/auth.js"></script><script src="js/documents.js"></script><script src="js/settings.js"></script><script src="js/ui.js"></script><script src="js/dashboard.js"></script>
+  <script src="js/supabase.js?v=20260905-2"></script><script src="js/i18n.js"></script><script src="js/auth.js"></script><script src="js/documents.js"></script><script src="js/learning.js"></script><script src="js/settings.js"></script><script src="js/ui.js"></script><script src="js/dashboard.js"></script>
 </body>
 </html>
